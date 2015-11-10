@@ -1,0 +1,53 @@
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button class="close" ng-click="closePan(true)">×</button>
+      <h4 class="modal-title">
+        Set game type
+      </h4>
+    </div>
+    <div class="modal-body">
+
+      <div class="row">
+        <div class="col-xs-4">
+          <h5>Set field Height</h5>
+          <div class="range">
+            <input type="range" ng-model="gameData.fieldHeight" name="rangeHeight" min="10" max="40">
+            <output id="range">{{gameData.fieldHeight}}</output>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <h5>Set Field Width</h5>
+
+          <div class="range range-primary">
+            <input type="range" ng-model="gameData.fieldWidth" name="rangeWidth" min="10" max="60">
+            <output id="rangePrimary">{{gameData.fieldWidth}}</output>
+          </div>
+        </div>
+
+        <div class="col-xs-4">
+          <h5>Set Mines Count</h5>
+          <div class="range range-error">
+            <input type="range" name="rangeMines" min="10" max="75" ng-model="gameData.mineCount">
+            <output id="rangeError">{{gameData.mineCount}}</output>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+            <div class="field-preview">
+              <div class="field-preview-wrapper">
+                <div class="field-row" ng-repeat="i in range(40) track by $index" ng-show="$index <= gameData.fieldHeight">
+                  <div class="field-cell" ng-repeat="i in range(60) track by $index" ng-show="$index <= gameData.fieldWidth"></div>
+                </div>
+              </div>
+
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button"  ng-click="closePan()" class="btn btn-success" name="button">{{buttonText}}</a>
+    </div>
+  </div>
+</div>

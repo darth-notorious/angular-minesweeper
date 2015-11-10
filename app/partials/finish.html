@@ -1,0 +1,21 @@
+<div class="modal-dialog modal-md finish-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button class="close" ng-click="triggerRestart()">×</button>
+      <h4 class="modal-title">
+        {{message}}
+      </h4>
+    </div>
+    <div class="modal-body">
+
+      <div class="row">
+        <div class="col-xs-5">
+          <button type="button"  ng-click="triggerRestart(true)" class="btn btn-primary" name="button">Change Game Settings</button>
+        </div>
+        <div class="col-xs-5 col-xs-offset-2">
+          <button type="button"  ng-click="triggerRestart()" class="btn btn-success" name="button">Start New Game</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

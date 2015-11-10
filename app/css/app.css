@@ -1,0 +1,98 @@
+/* app css stylesheet */
+
+.game-table {
+	max-width: 100%;
+	margin: auto;
+	margin-top: 5%;
+	font-size: 0px;
+	padding-left: 2px;
+}
+
+.cell {
+  display: inline-block;
+  margin-right: 2px;
+  margin-bottom: 2px;
+	width: 22px;
+	height: 22px;
+	text-align: center;
+	font-size: 14px;
+	color: transparent;
+	vertical-align: top;
+	background-color: gray;
+	box-shadow: -1px -1px 0 #000;
+}
+
+.cell.open {
+	color: green;
+	background-color: white;
+}
+
+.lost {
+	background-color: red;
+}
+
+.cell[data-charged="true"]:after {
+	display: block;
+	text-align: center;
+	content: '\2622';
+}
+
+.open[data-charged="true"]:after {
+	color: red;
+}
+
+.cell.marked:after {
+	display: block;
+	text-align: center;
+	color: white;
+	content: '\2691'
+}
+.modal.in {
+  display: block;
+}
+
+.modal-dialog {
+	z-index: 1050;
+}
+
+.field-preview {
+  text-align: center;
+}
+
+.field-preview-wrapper {
+  display: inline-block;
+  padding-top: 1px;
+  padding-left: 1px;
+}
+
+.field-cell {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 1px;
+  background-color: grey;
+  box-shadow: -1px -1px 0 #000;
+}
+
+.field-row {
+  margin-bottom: 1px;
+  word-spacing: 1px;
+  line-height: 12px;
+}
+
+.finish-modal .modal-title {
+	text-align: center;
+}
+
+.finish-modal .btn {
+	width: 100%;
+}
+
+.modal-parent {
+	position: fixed;
+	z-index: 1050;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}

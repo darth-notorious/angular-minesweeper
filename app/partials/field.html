@@ -1,0 +1,9 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="field">
+      <div class="game-table" style="width: {{24 * tableWidth + 2}}px">
+        <div ng-repeat="cell in cells" class="cell {{cell.status}}" data-charged="{{cell.charged}}" ng-right-click="mark(cell)" ng-click="handleClick(cell)">{{cell.number}}</div>
+      </div>
+    </div>
+  </div>
+</div>
