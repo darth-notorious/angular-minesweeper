@@ -24,21 +24,4 @@
       };
   });
 
-  /*minerApp.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/settings', {
-      templateUrl: 'partials/settings.html',
-      controller: 'SettingsCtrl'
-    })
-    .when('/field', {
-      templateUrl: 'partials/field.html',
-      controller: 'GameCtrl'
-    })
-    .when('/result', {
-      templateUrl: 'partials/finish.html',
-      controller: 'ResultCtrl'
-    })
-    .otherwise({
-      redirectTo: '/settings'
-    });
-  }]);*/
 })(angular);
