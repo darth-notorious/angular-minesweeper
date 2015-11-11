@@ -4,7 +4,6 @@
 
 (function(angular) {
   var minerApp = angular.module('minerApp', [
-  //  'ngRoute',
     'minerAnimations',
     'minerControllers',
     'minerFilters',
