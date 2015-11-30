@@ -5,7 +5,7 @@
 (function() {
   var minerControllers = angular.module('minerControllers', []);
 
-  minerControllers.controller('GameCtrl', ['$scope', function($scope, GameData) {
+  minerControllers.controller('GameCtrl', ['$scope', 'GAME_EVENTS', function($scope, GAME_EVENTS) {
     $scope.gameStatus = 'running';
 
     $scope.changeStatus = function(newStatus) {
@@ -16,19 +16,19 @@
       $scope.$broadcast('startNew');
     };
 
-    $scope.$on('settingsClose', function(_, needsRestart) {
+    $scope.$on(GAME_EVENTS.SETTINGS_CLOSED, function(_, needsRestart) {
         if(needsRestart) {
           $scope.triggerNew();
         }
         $scope.changeStatus('running');
     });
 
-    $scope.$on('gameEnded', function(_, result) {
+    $scope.$on(GAME_EVENTS.GAME_OVER, function(_, result) {
       $scope.gameStatus = 'ended';
       $scope.$broadcast(result);
     });
 
-    $scope.$on('userRestart', function(_, withConfig) {
+    $scope.$on(GAME_EVENTS.RESTART, function(_, withConfig) {
       if(withConfig) {
         $scope.changeStatus('settings');
       } else {
@@ -38,18 +38,23 @@
     });
   }]);
 
-  minerControllers.controller('SettingsCtrl', ['$scope', '$log', 'GameData', function($scope, $log, GameData) {
-    $scope.gameData = GameData.getGameData();
-    $scope.buttonText = 'Start New Game';
-
-    $scope.closePan = function(cancel) {
-      GameData.setGameData($scope.gameData);
-      $scope.$emit('settingsClose', !cancel);
-    };
-
-    $scope.range = function(n) {
-      return new Array(n);
-    };
+  minerControllers.controller('SettingsCtrl', [
+    '$scope', 
+    '$log', 
+    'GameData', 
+    'GAME_EVENTS', 
+    function($scope, $log, GameData, GAME_EVENTS) {
+      $scope.gameData = GameData.getGameData();
+      $scope.buttonText = 'Start New Game';
+  
+      $scope.closePan = function(cancel) {
+        GameData.setGameData($scope.gameData);
+        $scope.$emit(GAME_EVENTS.SETTINGS_CLOSED , !cancel);
+      };
+  
+      $scope.range = function(n) {
+        return new Array(n);
+      };
   }]);
 
   minerControllers.controller('FieldCtrl', [
@@ -58,7 +63,8 @@
     'Cell',
     '$timeout',
     'GameData',
-    function($scope, Vector, Cell, $timeout, GameData) {
+    'GAME_EVENTS',
+    function($scope, Vector, Cell, $timeout, GameData, GAME_EVENTS) {
       $scope.gameData = GameData.getGameData();
       $scope.tableWidth = 0;
 

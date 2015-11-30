@@ -4,9 +4,7 @@
 
 (function(angular) {
   var minerApp = angular.module('minerApp', [
-    'minerAnimations',
     'minerControllers',
-    'minerFilters',
     'minerServices',
     'minerClasses'
   ]);
