@@ -155,14 +155,14 @@
       };
 
       $scope.startGame();
-      $scope.$on('startNew', $scope.startGame);
+      $scope.$on(GAME_EVENTS.NEW_GAME, $scope.startGame);
 
       $scope.loseGame = function() {
-        $scope.$emit('gameEnded', 'loss');
+        $scope.$emit(GAME_EVENTS.GAME_OVER, GAME_EVENTS.GAME_LOST);
       };
 
       $scope.winGame = function() {
-        $scope.$emit('gameEnded', 'victory');
+        $scope.$emit(GAME_EVENTS.GAME_OVER, GAME_EVENTS.GAME_WON);
       };
 
       $scope.handleClick = function(targetCell) {
@@ -208,19 +208,19 @@
       };
   }]);
 
-  minerControllers.controller('FinishCtrl', ['$scope', function($scope) {
+  minerControllers.controller('FinishCtrl', ['$scope', 'GAME_EVENTS', function($scope, GAME_EVENTS) {
     $scope.message = '';
 
-    $scope.$on('victory', function() {
+    $scope.$on(GAME_EVENTS.GAME_WON, function() {
       $scope.message = 'Congratulations! You`ve won the game!';
     });
 
-    $scope.$on('loss', function() {
+    $scope.$on(GAME_EVENTS.GAME_LOST, function() {
       $scope.message = 'You`ve lost this time. Try to play once more!';
     });
 
     $scope.triggerRestart = function(withConfig) {
-      $scope.$emit('userRestart', withConfig);
+      $scope.$emit(GAME_EVENTS.RESTART, withConfig);
     };
 
   }]);
