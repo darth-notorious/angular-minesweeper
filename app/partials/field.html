@@ -1,17 +1,16 @@
 <div class="container-fluid">
   <div class="row">
     <div class="field">
-      <table class="game-table">
-        <tbody>
-          <tr ng-init="rowIndex = $index" ng-repeat="row in range(gameData.fieldHeight) track by $index">
-            <td class="cell {{getCell({x:$index, y:rowIndex}).status}}" 
+      <div class="field__board">
+          <div class="field__row" ng-init="rowIndex = $index" ng-repeat="row in range(gameData.fieldHeight) track by $index">
+            <div class="field__cell {{getCell({x:$index, y:rowIndex}).status}}" 
             data-charged="{{getCell({x:$index, y:rowIndex}).charged}}" 
             ng-right-click="mark(getCell({x:$index, y:rowIndex}))" 
             ng-click="handleClick(getCell({x:$index, y:rowIndex}))" 
-            ng-repeat="col in range(gameData.fieldWidth) track by $index" >{{getCell({x:$index, y:rowIndex}).number}}</td>
-          </tr>
-        </tbody>
-      </table>
+            ng-repeat="col in range(gameData.fieldWidth) track by $index" >{{getCell({x:$index, y:rowIndex}).number}}</div>
+          </div>
+      </div>
+          
     </div>
   </div>
 </div>
