@@ -2,7 +2,7 @@
 
 'use strict';
 
-(function(){
+(function(angular){
 	angular.module('minerConstants', [])
 	.constant('GAME_EVENTS', {
 		'GAME_OVER': 'gameEnded',
@@ -17,4 +17,4 @@
 		'SETTINGS': 'settings',
 		'ENDED': 'ended'
 	});
-})();
+})(angular);

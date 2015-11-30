@@ -1,8 +1,9 @@
+/*globals angular*/
 'use strict';
 
 /* Controllers */
 
-(function() {
+(function(angular) {
   var minerControllers = angular.module('minerControllers', []);
 
   minerControllers.controller('GameCtrl', ['$scope', 'GAME_EVENTS', function($scope, GAME_EVENTS) {
@@ -44,10 +45,9 @@
 
   minerControllers.controller('SettingsCtrl', [
     '$scope', 
-    '$log', 
     'GameData', 
     'GAME_EVENTS', 
-    function($scope, $log, GameData, GAME_EVENTS) {
+    function($scope, GameData, GAME_EVENTS) {
       $scope.gameData = GameData.getGameData();
       $scope.buttonText = 'Start New Game';
   
@@ -68,8 +68,7 @@
     '$timeout',
     'GameData',
     'GAME_EVENTS',
-    '$log',
-    function($scope, Vector, Cell, $timeout, GameData, GAME_EVENTS, $log) {
+    function($scope, Vector, Cell, $timeout, GameData, GAME_EVENTS) {
       $scope.gameData = GameData.getGameData();
       $scope.tableWidth = 0;
 
@@ -142,7 +141,7 @@
           $scope.gameData = GameData.getGameData();
           $scope.cells = [];
           var minesLeft = $scope.gameData.mineCount;
-          $log.log($scope.gameData);
+          
           for(var i = 0; i < $scope.gameData.fieldHeight; i++) {
             for(var j = 0; j < $scope.gameData.fieldWidth; j++) {
               $scope.cells.push(new Cell(new Vector(j, i)));
@@ -228,4 +227,4 @@
     };
 
   }]);
-})();
+})(angular);

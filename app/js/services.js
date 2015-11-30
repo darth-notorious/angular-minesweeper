@@ -1,8 +1,9 @@
+/*globals angular*/
 'use strict';
 
 /* Services */
 
-(function() {
+(function(angular) {
   var minerServices = angular.module('minerServices', ['ngResource']);
 
   minerServices.factory('GameData', function() {
@@ -26,4 +27,4 @@
       }
     };
   });
-})();
+})(angular);
