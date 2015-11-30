@@ -13,7 +13,7 @@
     };
 
     $scope.triggerNew = function() {
-      $scope.$broadcast('startNew');
+      $scope.$broadcast(GAME_EVENTS.NEW_GAME);
     };
 
     $scope.$on(GAME_EVENTS.SETTINGS_CLOSED, function(_, needsRestart) {
@@ -36,6 +36,10 @@
         $scope.changeStatus('running');
       }
     });
+    
+    $scope.range = function(n) {
+        return new Array(n);
+    };
   }]);
 
   minerControllers.controller('SettingsCtrl', [
@@ -48,13 +52,13 @@
       $scope.buttonText = 'Start New Game';
   
       $scope.closePan = function(cancel) {
+        Object.keys($scope.gameData).forEach(function(key) {
+          $scope.gameData[key] = parseInt($scope.gameData[key], 10)
+        });
         GameData.setGameData($scope.gameData);
         $scope.$emit(GAME_EVENTS.SETTINGS_CLOSED , !cancel);
       };
-  
-      $scope.range = function(n) {
-        return new Array(n);
-      };
+ 
   }]);
 
   minerControllers.controller('FieldCtrl', [
@@ -64,7 +68,8 @@
     '$timeout',
     'GameData',
     'GAME_EVENTS',
-    function($scope, Vector, Cell, $timeout, GameData, GAME_EVENTS) {
+    '$log',
+    function($scope, Vector, Cell, $timeout, GameData, GAME_EVENTS, $log) {
       $scope.gameData = GameData.getGameData();
       $scope.tableWidth = 0;
 
@@ -135,10 +140,9 @@
 
       $scope.startGame = function() {
           $scope.gameData = GameData.getGameData();
-          $scope.tableWidth = $scope.gameData.fieldWidth;
           $scope.cells = [];
           var minesLeft = $scope.gameData.mineCount;
-
+          $log.log($scope.gameData);
           for(var i = 0; i < $scope.gameData.fieldHeight; i++) {
             for(var j = 0; j < $scope.gameData.fieldWidth; j++) {
               $scope.cells.push(new Cell(new Vector(j, i)));
@@ -203,7 +207,7 @@
       };
 
       $scope.mark = function(targetCell) {
-        targetCell.status = 'marked';
+        targetCell.status = targetCell.status === 'marked'? 'closed' : targetCell.status === 'open' ? 'open' : 'marked';
         $scope.checkMarks();
       };
   }]);

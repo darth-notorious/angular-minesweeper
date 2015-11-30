@@ -20,6 +20,7 @@
 	vertical-align: top;
 	background-color: gray;
 	box-shadow: -1px -1px 0 #000;
+	cursor: pointer;
 }
 
 .cell.open {

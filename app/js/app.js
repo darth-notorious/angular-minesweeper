@@ -6,6 +6,7 @@
   var minerApp = angular.module('minerApp', [
     'minerControllers',
     'minerServices',
+    'minerConstants',
     'minerClasses'
   ]);
 
