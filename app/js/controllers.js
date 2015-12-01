@@ -6,8 +6,10 @@
 (function(angular) {
   var minerControllers = angular.module('minerControllers', []);
 
-  minerControllers.controller('GameCtrl', ['$scope', 'GAME_EVENTS', function($scope, GAME_EVENTS) {
-    $scope.gameStatus = 'running';
+  minerControllers.controller('GameCtrl', ['$scope', 'GAME_EVENTS', 'GAME_STATES', function($scope, GAME_EVENTS, GAME_STATES) {
+    $scope.GAME_STATES = GAME_STATES;
+    $scope.gameStatus = GAME_STATES.RUNNING;
+    
 
     $scope.changeStatus = function(newStatus) {
       $scope.gameStatus = newStatus;
@@ -21,20 +23,20 @@
         if(needsRestart) {
           $scope.triggerNew();
         }
-        $scope.changeStatus('running');
+        $scope.changeStatus(GAME_STATES.RUNNING);
     });
 
     $scope.$on(GAME_EVENTS.GAME_OVER, function(_, result) {
-      $scope.gameStatus = 'ended';
+      $scope.changeStatus(GAME_STATES.ENDED);
       $scope.$broadcast(result);
     });
 
     $scope.$on(GAME_EVENTS.RESTART, function(_, withConfig) {
       if(withConfig) {
-        $scope.changeStatus('settings');
+        $scope.changeStatus(GAME_STATES.SETTINGS);
       } else {
         $scope.triggerNew();
-        $scope.changeStatus('running');
+        $scope.changeStatus(GAME_STATES.RUNNING);
       }
     });
     
@@ -46,19 +48,23 @@
   minerControllers.controller('SettingsCtrl', [
     '$scope', 
     'GameData', 
-    'GAME_EVENTS', 
-    function($scope, GameData, GAME_EVENTS) {
+    'GAME_EVENTS',
+    '$log', 
+    function($scope, GameData, GAME_EVENTS, $log) {
       $scope.gameData = GameData.getGameData();
       $scope.buttonText = 'Start New Game';
-  
-      $scope.closePan = function(cancel) {
+      
+      $scope.convertDataToInt = function() {
         Object.keys($scope.gameData).forEach(function(key) {
           $scope.gameData[key] = parseInt($scope.gameData[key], 10)
         });
+        $log.log($scope.gameData);
+      };
+      
+      $scope.closePan = function(cancel) {
         GameData.setGameData($scope.gameData);
         $scope.$emit(GAME_EVENTS.SETTINGS_CLOSED , !cancel);
-      };
- 
+      }; 
   }]);
 
   minerControllers.controller('FieldCtrl', [

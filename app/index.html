@@ -19,16 +19,13 @@
   <script src="js/app.js"></script>
 </head>
 <body class="container-fluid">
-
-
   <div class="view-container" ng-controller="GameCtrl">
-    <button type="button" class="btn btn-primary" ng-click="changeStatus('settings')">Pause/Settings</button>
+    <button type="button" class="btn btn-primary" ng-click="changeStatus(GAME_STATES.SETTINGS)">Pause/Settings</button>
     <button type="button" class="btn btn-primary" ng-click="triggerNew()">Restart</button>
-    <ng-include class="modal-parent" ng-show="gameStatus === 'settings'" src="'partials/settings.html'" ng-controller="SettingsCtrl"></ng-include>
+    <ng-include src="'partials/settings.html'" ng-controller="SettingsCtrl" class="modal-parent" ng-show="gameStatus === GAME_STATES.SETTINGS"></ng-include>
     <ng-include src="'partials/field.html'" ng-controller="FieldCtrl"></ng-include>
-    <ng-include class="modal-parent" ng-show="gameStatus === 'ended'" src="'partials/finish.html'" ng-controller="FinishCtrl"></ng-include>
-    <div ng-show="(gameStatus === 'settings') || (gameStatus === 'ended')" class="modal-backdrop fade in"></div>
+    <ng-include src="'partials/finish.html'" ng-controller="FinishCtrl" class="modal-parent" ng-show="gameStatus === GAME_STATES.ENDED"></ng-include>
+    <div ng-show="(gameStatus === GAME_STATES.SETTINGS) || (gameStatus === GAME_STATES.ENDED)" class="modal-backdrop fade in"></div>
   </div>
-
 </body>
 </html>
