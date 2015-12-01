@@ -49,8 +49,7 @@
     '$scope', 
     'GameData', 
     'GAME_EVENTS',
-    '$log', 
-    function($scope, GameData, GAME_EVENTS, $log) {
+    function($scope, GameData, GAME_EVENTS) {
       $scope.gameData = GameData.getGameData();
       $scope.buttonText = 'Start New Game';
       

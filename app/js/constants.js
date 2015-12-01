@@ -16,5 +16,6 @@
 		'RUNNING': 'running',
 		'SETTINGS': 'settings',
 		'ENDED': 'ended'
-	});
+	})
+	.constant('DB_NAME', 'minesweeperData');
 })(angular);
