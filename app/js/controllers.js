@@ -58,7 +58,6 @@
         Object.keys($scope.gameData).forEach(function(key) {
           $scope.gameData[key] = parseInt($scope.gameData[key], 10)
         });
-        $log.log($scope.gameData);
       };
       
       $scope.closePan = function(cancel) {
@@ -165,9 +164,16 @@
 
       $scope.startGame();
       $scope.$on(GAME_EVENTS.NEW_GAME, $scope.startGame);
+      
+      $scope.showMines = function() {
+        $scope.cells.forEach(function(cell){
+          if(cell.charged && cell.status === 'closed') cell.status = 'open';
+        });
+      };
 
       $scope.loseGame = function() {
-        $scope.$emit(GAME_EVENTS.GAME_OVER, GAME_EVENTS.GAME_LOST);
+        $scope.showMines();
+        $timeout(function(){$scope.$emit(GAME_EVENTS.GAME_OVER, GAME_EVENTS.GAME_LOST);}, 300);
       };
 
       $scope.winGame = function() {
