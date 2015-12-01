@@ -1,6 +1,9 @@
 <div class="container-fluid">
   <div class="row">
     <div class="field">
+      <div class="field__flags-counter">
+        {{flagsCount}}
+      </div>
       <div class="field__board">
           <div class="field__row" ng-init="rowIndex = $index" ng-repeat="row in range(gameData.fieldHeight) track by $index">
             <div class="field__cell {{getCell({x:$index, y:rowIndex}).status}}" 

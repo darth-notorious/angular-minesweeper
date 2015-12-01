@@ -75,6 +75,7 @@
     'GAME_EVENTS',
     function($scope, Vector, Cell, $timeout, GameData, GAME_EVENTS) {
       $scope.gameData = GameData.getGameData();
+      $scope.flagsCount = $scope.gameData.mineCount;
       $scope.tableWidth = 0;
 
       $scope.cells = [];
@@ -145,7 +146,7 @@
       $scope.startGame = function() {
           $scope.gameData = GameData.getGameData();
           $scope.cells = [];
-          var minesLeft = $scope.gameData.mineCount;
+          var minesLeft = $scope.flagsCount = $scope.gameData.mineCount;
           
           for(var i = 0; i < $scope.gameData.fieldHeight; i++) {
             for(var j = 0; j < $scope.gameData.fieldWidth; j++) {
@@ -218,7 +219,15 @@
       };
 
       $scope.mark = function(targetCell) {
-        targetCell.status = targetCell.status === 'marked'? 'closed' : targetCell.status === 'open' ? 'open' : 'marked';
+        
+        if(targetCell.status === 'marked') {
+          targetCell.status = 'closed';
+          $scope.flagsCount++;
+        } else if(targetCell.status === 'closed' && $scope.flagsCount > 0) {
+          targetCell.status = 'marked';
+          $scope.flagsCount--;
+        }
+        
         $scope.checkMarks();
       };
   }]);

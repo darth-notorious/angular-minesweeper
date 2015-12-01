@@ -5,10 +5,21 @@
 	text-align: center;
 }
 
+.game-actions {
+	margin-bottom: 2%;
+}
+
+.field__flags-counter {
+	font-size: 1.5rem;
+	font-family: monospace;	
+	font-weight: bold;
+	color: #801515;
+}
+
 .field__board {
 	max-width: 100%;
 	margin: auto;
-	margin-top: 5%;
+	margin-top: 3%;
 	font-size: 0px;
 	padding-left: 2px;
 	text-align: center;

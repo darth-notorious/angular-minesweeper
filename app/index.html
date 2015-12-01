@@ -20,8 +20,11 @@
 </head>
 <body class="container-fluid">
   <div class="view-container" ng-controller="GameCtrl">
-    <button type="button" class="btn btn-primary" ng-click="changeStatus(GAME_STATES.SETTINGS)">Pause/Settings</button>
-    <button type="button" class="btn btn-primary" ng-click="triggerNew()">Restart</button>
+    <div class="game-actions">
+      <button type="button" class="btn btn-primary" ng-click="changeStatus(GAME_STATES.SETTINGS)">Pause/Settings</button>
+      <button type="button" class="btn btn-primary" ng-click="triggerNew()">Restart</button>
+    </div>
+    
     <ng-include src="'partials/settings.html'" ng-controller="SettingsCtrl" class="modal-parent" ng-show="gameStatus === GAME_STATES.SETTINGS"></ng-include>
     <ng-include src="'partials/field.html'" ng-controller="FieldCtrl"></ng-include>
     <ng-include src="'partials/finish.html'" ng-controller="FinishCtrl" class="modal-parent" ng-show="gameStatus === GAME_STATES.ENDED"></ng-include>
