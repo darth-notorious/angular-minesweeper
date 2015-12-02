@@ -5,45 +5,49 @@
 
 (function(angular) {
   angular.module('mswpControllers', [])
-  .controller('GameCtrl', ['$scope', 'GAME_EVENTS', 'GAME_STATES', function($scope, GAME_EVENTS, GAME_STATES) {
-    $scope.GAME_STATES = GAME_STATES;
-    $scope.gameStatus = GAME_STATES.RUNNING;
-    
-    $scope.needsBackdrop = function() {
-      return ($scope.gameStatus === GAME_STATES.SETTINGS) || ($scope.gameStatus === GAME_STATES.ENDED);
-    };
-    $scope.changeStatus = function(newStatus) {
-      $scope.gameStatus = newStatus;
-    };
-
-    $scope.triggerNew = function() {
-      $scope.$broadcast(GAME_EVENTS.NEW_GAME);
-    };
-
-    $scope.$on(GAME_EVENTS.SETTINGS_CLOSED, function(_, needsRestart) {
-        if(needsRestart) {
+  .controller('GameCtrl', [
+    '$scope', 
+    'GAME_EVENTS', 
+    'GAME_STATES', 
+    function($scope, GAME_EVENTS, GAME_STATES) {
+      $scope.GAME_STATES = GAME_STATES;
+      $scope.gameStatus = GAME_STATES.RUNNING;
+      
+      $scope.needsBackdrop = function() {
+        return ($scope.gameStatus === GAME_STATES.SETTINGS) || ($scope.gameStatus === GAME_STATES.ENDED);
+      };
+      $scope.changeStatus = function(newStatus) {
+        $scope.gameStatus = newStatus;
+      };
+  
+      $scope.triggerNew = function() {
+        $scope.$broadcast(GAME_EVENTS.NEW_GAME);
+      };
+  
+      $scope.$on(GAME_EVENTS.SETTINGS_CLOSED, function(_, needsRestart) {
+          if(needsRestart) {
+            $scope.triggerNew();
+          }
+          $scope.changeStatus(GAME_STATES.RUNNING);
+      });
+  
+      $scope.$on(GAME_EVENTS.GAME_OVER, function(_, result) {
+        $scope.changeStatus(GAME_STATES.ENDED);
+        $scope.$broadcast(result);
+      });
+  
+      $scope.$on(GAME_EVENTS.RESTART, function(_, withConfig) {
+        if(withConfig) {
+          $scope.changeStatus(GAME_STATES.SETTINGS);
+        } else {
           $scope.triggerNew();
+          $scope.changeStatus(GAME_STATES.RUNNING);
         }
-        $scope.changeStatus(GAME_STATES.RUNNING);
-    });
-
-    $scope.$on(GAME_EVENTS.GAME_OVER, function(_, result) {
-      $scope.changeStatus(GAME_STATES.ENDED);
-      $scope.$broadcast(result);
-    });
-
-    $scope.$on(GAME_EVENTS.RESTART, function(_, withConfig) {
-      if(withConfig) {
-        $scope.changeStatus(GAME_STATES.SETTINGS);
-      } else {
-        $scope.triggerNew();
-        $scope.changeStatus(GAME_STATES.RUNNING);
-      }
-    });
-    
-    $scope.range = function(n) {
-        return new Array(n);
-    };
+      });
+      
+      $scope.range = function(n) {
+          return new Array(n);
+      };
   }])
   .controller('SettingsCtrl', [
     '$scope', 
@@ -71,7 +75,8 @@
     '$timeout',
     'GameData',
     'GAME_EVENTS',
-    function($scope, Vector, Cell, $timeout, GameData, GAME_EVENTS) {
+    '$log',
+    function($scope, Vector, Cell, $timeout, GameData, GAME_EVENTS, $log) {
       $scope.gameData = GameData.getGameData();
       $scope.flagsCount = $scope.gameData.mineCount;
       $scope.tableWidth = 0;
@@ -218,18 +223,6 @@
         }
       };
 
-      $scope.mark = function(targetCell) {
-        
-        if(targetCell.status === 'marked') {
-          targetCell.status = 'closed';
-          $scope.flagsCount++;
-        } else if(targetCell.status === 'closed' && $scope.flagsCount > 0) {
-          targetCell.status = 'marked';
-          $scope.flagsCount--;
-        }
-        
-        $scope.checkMarks();
-      };
   }])
   .controller('FinishCtrl', ['$scope', 'GAME_EVENTS', function($scope, GAME_EVENTS) {
     $scope.message = '';

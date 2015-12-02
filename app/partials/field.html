@@ -6,14 +6,16 @@
       </div>
       <div class="field__board">
           <div class="field__row" ng-init="rowIndex = $index" ng-repeat="row in range(gameData.fieldHeight) track by $index">
-            <div class="field__cell {{getCell({x:$index, y:rowIndex}).status}}" 
-            data-charged="{{getCell({x:$index, y:rowIndex}).charged}}" 
-            ng-right-click="mark(getCell({x:$index, y:rowIndex}))" 
-            ng-click="handleClick(getCell({x:$index, y:rowIndex}))" 
-            ng-repeat="col in range(gameData.fieldWidth) track by $index" >{{getCell({x:$index, y:rowIndex}).number}}</div>
+            <div 
+                 
+                ng-repeat="col in range(gameData.fieldWidth) track by $index"
+                class="field__cell {{getCell({x:$index, y:rowIndex}).status}}" 
+                data-charged="{{getCell({x:$index, y:rowIndex}).charged}}" 
+                ng-right-click="mark(getCell({x:$index, y:rowIndex}))" 
+                ng-click="handleClick(getCell({x:$index, y:rowIndex}))" 
+            >{{getCell({x:$index, y:rowIndex}).number}}</div> 
           </div>
-      </div>
-          
+      </div> 
     </div>
   </div>
 </div>
