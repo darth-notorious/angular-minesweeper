@@ -5,14 +5,13 @@
 /* App Module */
 
 (function(angular) {
-  var minerApp = angular.module('minerApp', [
-    'minerControllers',
-    'minerServices',
-    'minerConstants',
-    'minerClasses'
-  ]);
-
-  minerApp.directive('ngRightClick', function($parse) {
+  angular.module('mswpApp', [
+    'mswpControllers',
+    'mswpServices',
+    'mswpConstants',
+    'mswpClasses'
+  ])
+  .directive('ngRightClick', function($parse) {
       return function(scope, element, attrs) {
           var fn = $parse(attrs.ngRightClick);
           element.bind('contextmenu', function(event) {

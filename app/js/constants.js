@@ -3,7 +3,7 @@
 'use strict';
 
 (function(angular){
-	angular.module('minerConstants', [])
+	angular.module('mswpConstants', [])
 	.constant('GAME_EVENTS', {
 		'GAME_OVER': 'gameEnded',
 		'RESTART': 'userRestart',
@@ -17,5 +17,5 @@
 		'SETTINGS': 'settings',
 		'ENDED': 'ended'
 	})
-	.constant('DB_NAME', 'minesweeperData');
+	.constant('DB_NAME', 'mswpData');
 })(angular);

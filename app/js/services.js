@@ -4,9 +4,8 @@
 /* Services */
 
 (function(angular) {
-  var minerServices = angular.module('minerServices', []);
-
-  minerServices.factory('GameData', ['DB_NAME', function(DB_NAME) {
+  angular.module('mswpServices', [])
+  .factory('GameData', ['DB_NAME', function(DB_NAME) {
     var defaults =  {
       fieldHeight: 10,
       fieldWidth: 10,

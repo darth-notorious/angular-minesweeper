@@ -4,13 +4,14 @@
 /* Controllers */
 
 (function(angular) {
-  var minerControllers = angular.module('minerControllers', []);
-
-  minerControllers.controller('GameCtrl', ['$scope', 'GAME_EVENTS', 'GAME_STATES', function($scope, GAME_EVENTS, GAME_STATES) {
+  angular.module('mswpControllers', [])
+  .controller('GameCtrl', ['$scope', 'GAME_EVENTS', 'GAME_STATES', function($scope, GAME_EVENTS, GAME_STATES) {
     $scope.GAME_STATES = GAME_STATES;
     $scope.gameStatus = GAME_STATES.RUNNING;
     
-
+    $scope.needsBackdrop = function() {
+      return ($scope.gameStatus === GAME_STATES.SETTINGS) || ($scope.gameStatus === GAME_STATES.ENDED);
+    };
     $scope.changeStatus = function(newStatus) {
       $scope.gameStatus = newStatus;
     };
@@ -43,9 +44,8 @@
     $scope.range = function(n) {
         return new Array(n);
     };
-  }]);
-
-  minerControllers.controller('SettingsCtrl', [
+  }])
+  .controller('SettingsCtrl', [
     '$scope', 
     'GameData', 
     'GAME_EVENTS',
@@ -63,9 +63,8 @@
         GameData.setGameData($scope.gameData);
         $scope.$emit(GAME_EVENTS.SETTINGS_CLOSED , !cancel);
       }; 
-  }]);
-
-  minerControllers.controller('FieldCtrl', [
+  }])
+  .controller('FieldCtrl', [
     '$scope',
     'Vector',
     'Cell',
@@ -187,7 +186,9 @@
             currentCell,
             neighbourCells,
             chargedNum;
-
+            
+        if(targetCell.status === 'marked') return false;
+             
         if(targetCell.charged) {
           targetCell.status = 'open';
           $timeout($scope.loseGame, 600);
@@ -229,9 +230,8 @@
         
         $scope.checkMarks();
       };
-  }]);
-
-  minerControllers.controller('FinishCtrl', ['$scope', 'GAME_EVENTS', function($scope, GAME_EVENTS) {
+  }])
+  .controller('FinishCtrl', ['$scope', 'GAME_EVENTS', function($scope, GAME_EVENTS) {
     $scope.message = '';
 
     $scope.$on(GAME_EVENTS.GAME_WON, function() {

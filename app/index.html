@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="minerApp">
+<html lang="en" ng-app="mswpApp">
 <head>
   <meta charset="utf-8">
   <title>Miner App</title>
@@ -27,7 +27,7 @@
     <ng-include src="'partials/settings.html'" ng-controller="SettingsCtrl" class="modal-parent" ng-show="gameStatus === GAME_STATES.SETTINGS"></ng-include>
     <ng-include src="'partials/field.html'" ng-controller="FieldCtrl"></ng-include>
     <ng-include src="'partials/finish.html'" ng-controller="FinishCtrl" class="modal-parent" ng-show="gameStatus === GAME_STATES.ENDED"></ng-include>
-    <div ng-show="(gameStatus === GAME_STATES.SETTINGS) || (gameStatus === GAME_STATES.ENDED)" class="modal-backdrop fade in"></div>
+    <div ng-show="needsBackdrop()" class="modal-backdrop fade in"></div>
   </div>
 </body>
 </html>

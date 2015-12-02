@@ -3,9 +3,9 @@
 /* Custom Constructor Functions */
 
 (function(angular) {
-  var minerClasses = angular.module('minerClasses', []);
-
-  minerClasses.factory('Vector', function() {
+  angular.module('mswpClasses', [])
+  
+  .factory('Vector', function() {
     function Vector(x, y) {
       this.x = x;
       this.y = y;
@@ -20,9 +20,8 @@
     };
 
     return (Vector);
-  });
-
-  minerClasses.factory('Cell', function() {
+  })
+  .factory('Cell', function() {
 
     function Cell(pos) {
       this.pos = pos;
