@@ -107,6 +107,17 @@
         return twoDGrid.getCell(pos);
       }
       
+      $scope.mark = function(cell) {
+        if(cell.status === 'open') return false;
+        if(cell.status === 'closed') {
+          cell.status = 'marked';
+           $scope.flagsCount--;
+        } else if(cell.status === 'marked') {
+          cell.status = 'closed';
+          $scope.flagsCount++;
+        }
+      };
+      
       $scope.checkMarks = function() {
         var markedCells = $scope.cells.filter(function(cell) {
           return cell.charged && cell.status == 'marked';
