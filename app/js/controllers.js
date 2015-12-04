@@ -76,59 +76,37 @@
     'GameData',
     'GAME_EVENTS',
     '$log',
-    function($scope, Vector, Cell, $timeout, GameData, GAME_EVENTS, $log) {
+    '2dGrid',
+    function($scope, Vector, Cell, $timeout, GameData, GAME_EVENTS, $log, twoDGrid) {
       $scope.gameData = GameData.getGameData();
       $scope.flagsCount = $scope.gameData.mineCount;
       $scope.tableWidth = 0;
 
       $scope.cells = [];
 
-      $scope.isInside = function(pos) {
-        return (pos.x >= 0 && pos.x < $scope.gameData.fieldWidth)
-                &&
-               (pos.y >= 0 && pos.y < $scope.gameData.fieldHeight);
-      };
+      $scope.startGame = function() {
+          $scope.gameData = GameData.getGameData();
+          twoDGrid.setGridDimensions({
+            width: $scope.gameData.fieldWidth,
+            height: $scope.gameData.fieldHeight
+          });
+          $scope.cells = twoDGrid.buildCellsArray(Cell);
+          
+          var minesLeft = $scope.flagsCount = $scope.gameData.mineCount;
 
-      $scope.getCell = function(pos) {
-        return $scope.cells[pos.x + pos.y * $scope.gameData.fieldWidth];
-      }
-
-      $scope.getIndex = function(cell) {
-        return $scope.cells.indexOf(cell);
-      }
-
-      $scope.getNeighbours = function(cell) {
-        var directions = [
-              new Vector(-1, -1),
-              new Vector(0, -1),
-              new Vector(1, -1),
-              new Vector(-1, 0),
-              new Vector(1, 0),
-              new Vector(-1, 1),
-              new Vector(0, 1),
-              new Vector(1, 1)
-            ],
-            neighbours = [],
-            neighbourCellPos;
-
-        for(var i = 0; i < directions.length; i++) {
-          neighbourCellPos = cell.pos.plus(directions[i]);
-          if($scope.isInside(neighbourCellPos)) {
-            neighbours.push($scope.getCell(neighbourCellPos));
+          while(minesLeft > 0) {
+            var randCell = $scope.cells[twoDGrid.getRandomIndex()];
+            if( randCell && !randCell.charged) {
+              randCell.charged = true;
+              minesLeft--;
+            }
           }
-        }
-
-        return neighbours;
-      }
-
-      $scope.checkNeighbours = function(neighbourArr) {
-        var chargedNeighbours = neighbourArr.filter(function(cell) {
-          return cell.charged;
-        });
-
-        return chargedNeighbours.length;
       };
-
+      
+      $scope.getCell = function(pos) {
+        return twoDGrid.getCell(pos);
+      }
+      
       $scope.checkMarks = function() {
         var markedCells = $scope.cells.filter(function(cell) {
           return cell.charged && cell.status == 'marked';
@@ -137,33 +115,6 @@
         if(markedCells.length == $scope.gameData.mineCount) {
           $scope.winGame();
         }
-      };
-
-      $scope.getRandomIndex = function() {
-        var xIndex = Math.round(Math.random() * $scope.gameData.fieldWidth),
-            yIndex = Math.round(Math.random() * $scope.gameData.fieldHeight);
-
-        return (xIndex + yIndex * $scope.gameData.fieldWidth);
-      };
-
-      $scope.startGame = function() {
-          $scope.gameData = GameData.getGameData();
-          $scope.cells = [];
-          var minesLeft = $scope.flagsCount = $scope.gameData.mineCount;
-          
-          for(var i = 0; i < $scope.gameData.fieldHeight; i++) {
-            for(var j = 0; j < $scope.gameData.fieldWidth; j++) {
-              $scope.cells.push(new Cell(new Vector(j, i)));
-            }
-          }
-
-          while(minesLeft > 0) {
-            var randCell = $scope.cells[$scope.getRandomIndex()];
-            if( randCell && !randCell.charged) {
-              randCell.charged = true;
-              minesLeft--;
-            }
-          }
       };
 
       $scope.startGame();
@@ -201,20 +152,22 @@
         }
 
         cellsToCheck.push(targetCell);
-        added[$scope.getIndex(targetCell)] = true;
+        added[twoDGrid.getIndex(targetCell)] = true;
 
         while(cellsToCheck.length) {
             currentCell = cellsToCheck.pop();
-            neighbourCells = $scope.getNeighbours(currentCell);
-            chargedNum = $scope.checkNeighbours(neighbourCells);
+            neighbourCells = twoDGrid.getNeighbours(currentCell);
+            chargedNum = neighbourCells.filter(function(cell){
+              return cell.charged;
+            }).length;
             if(chargedNum) {
                 currentCell.number = chargedNum;
             } else {
                 currentCell.number = '';
                 neighbourCells.forEach(function(cell){
-                    if(!(cell.status == 'open') && !added[$scope.getIndex(cell)]) {
+                    if(!(cell.status == 'open') && !added[twoDGrid.getIndex(cell)]) {
                         cellsToCheck.push(cell);
-                        added[$scope.getIndex(cell)] = true;
+                        added[twoDGrid.getIndex(cell)] = true;
                     }
                 });
             }
@@ -222,8 +175,8 @@
             currentCell.setStatus('open');
         }
       };
-
   }])
+  
   .controller('FinishCtrl', ['$scope', 'GAME_EVENTS', function($scope, GAME_EVENTS) {
     $scope.message = '';
 
